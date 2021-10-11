@@ -9,13 +9,82 @@ import { DataServiceService } from 'src/app/services/data-service.service';
 })
 export class CountriesComponent implements OnInit {
 
+  totalConfirmed = 0;
+  totalActive = 0;
+  totalDeaths = 0;
+  totalRecovered = 0;
+  conVSdeath = 0;
+  conVSrecover = 0;
   data!: GlobalDataSummary[];
   countries : string[] = [];
-  constructor(private service: DataServiceService) { }
+  constructor(private dataService: DataServiceService) { }
 
   ngOnInit(): void {
 
-   
+    this.dataService.getDateWiseDate().subscribe(
+      (result)=> {
+        console.log(result);
+        
+      }
+    )
+
+    this.dataService.getGlobalData()
+      .subscribe(
+        {
+          next : (result)=>{
+            //console.log(result);
+            result.forEach((row: {
+              country : string; 
+              confirmed : number;
+            }) => {
+
+              if(!Number.isNaN(row.confirmed)) {
+                console.log(row.country);
+                this.countries.push(row.country);
+              }
+            });
+
+            //console.log(this.countries);
+          }
+        }
+      )
+  }
+
+  updateValues(country : string) {
+    console.log(country);
+    
+    this.dataService.getGlobalData()
+      .subscribe(
+        {
+          next : (result)=>{
+            //console.log(result);
+            result.forEach((row: {
+              country : string; 
+              confirmed : number;
+              deaths : number;
+              recovered : number;
+              active : number; 
+            }) => {
+
+              if(row.country == country) {
+                this.totalConfirmed += row.confirmed;
+                this.totalDeaths += row.deaths;
+                this.totalRecovered += row.recovered;
+                this.totalActive += row.active;
+              }
+            });
+
+            this.conVSdeath = Math.round(((this.totalDeaths / this.totalConfirmed) * 100) * 100 ) / 100;
+            this.conVSrecover = Math.round(((this.totalRecovered / this.totalConfirmed) * 100) * 100 ) / 100;
+            
+            console.log(this.totalConfirmed);
+            console.log(this.totalDeaths);
+            console.log(this.totalRecovered);
+            console.log(this.totalActive);
+            
+          }
+        }
+      )
   }
 
 }

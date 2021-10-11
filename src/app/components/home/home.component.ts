@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GoogleChartInterface } from 'ng2-google-charts/lib/google-chart/google-chart.component';
 import { GlobalDataSummary } from 'src/app/models/global-data';
 import { DataServiceService } from 'src/app/services/data-service.service';
 
@@ -13,7 +14,8 @@ export class HomeComponent implements OnInit {
   totalActive = 0;
   totalDeaths = 0;
   totalRecovered = 0;
-  globalData!: GlobalDataSummary[];
+  conVSdeath = 0;
+  conVSrecover = 0;
   constructor(private dataService: DataServiceService) { }
 
   ngOnInit(): void {
@@ -39,11 +41,17 @@ export class HomeComponent implements OnInit {
               }
             });
 
-            console.log(this.totalConfirmed);
-            console.log(this.totalDeaths);
-            console.log(this.totalRecovered);
-            console.log(this.totalActive);
+
+            this.conVSdeath = Math.round(((this.totalDeaths / this.totalConfirmed) * 100) * 100 ) / 100;
+            this.conVSrecover = Math.round(((this.totalRecovered / this.totalConfirmed) * 100) * 100 ) / 100;
+            //this.conVSdeath = Math.round(((this.totalDeaths / this.totalConfirmed) * 100) * 100 ) / 100;
+            console.log(this.conVSdeath);
+            // console.log(this.totalConfirmed);
+            // console.log(this.totalDeaths);
+            // console.log(this.totalRecovered);
+            // console.log(this.totalActive);
             
+            console.log(result);
           }
         }
       )

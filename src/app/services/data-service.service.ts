@@ -8,12 +8,20 @@ import { GlobalDataSummary } from '../models/global-data';
 })
 export class DataServiceService {
 
+  date = new Date();
+  
+
   totalConfirmed = 0;
   totalActive = 0;
   totalDeaths = 0;
   totalRecovered = 0;
-  private globalDataUrl = `https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/10-05-2021.csv`;
+  private globalDataUrl = `https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/10-10-2021.csv`;
+  private dateWiseDataUrl = `https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv`;
   constructor(private http: HttpClient) { }
+
+  getDateWiseDate() {
+    return this.http.get(this.dateWiseDataUrl, {responseType : 'text'});
+  }
 
   getGlobalData() {
     return this.http.get(this.globalDataUrl, {responseType : 'text'}).pipe(
