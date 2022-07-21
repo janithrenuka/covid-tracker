@@ -16,9 +16,19 @@ export class HomeComponent implements OnInit {
   totalRecovered = 0;
   conVSdeath = 0;
   conVSrecover = 0;
+  dateWiseData: any ;
   constructor(private dataService: DataServiceService) { }
 
   ngOnInit(): void {
+
+    this.dataService.getDateWiseDate().subscribe(
+      (result)=> {
+        //console.log(result);
+        this.dateWiseData = result;
+        console.log(this.dateWiseData);
+        
+      }
+    )
 
     this.dataService.getGlobalData()
       .subscribe(
@@ -45,13 +55,13 @@ export class HomeComponent implements OnInit {
             this.conVSdeath = Math.round(((this.totalDeaths / this.totalConfirmed) * 100) * 100 ) / 100;
             this.conVSrecover = Math.round(((this.totalRecovered / this.totalConfirmed) * 100) * 100 ) / 100;
             //this.conVSdeath = Math.round(((this.totalDeaths / this.totalConfirmed) * 100) * 100 ) / 100;
-            console.log(this.conVSdeath);
+            //console.log(this.conVSdeath);
             // console.log(this.totalConfirmed);
             // console.log(this.totalDeaths);
             // console.log(this.totalRecovered);
             // console.log(this.totalActive);
             
-            console.log(result);
+            //console.log(result);
           }
         }
       )

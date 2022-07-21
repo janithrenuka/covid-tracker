@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DateWiseData } from 'src/app/models/date-wise-data';
 import { GlobalDataSummary } from 'src/app/models/global-data';
 import { DataServiceService } from 'src/app/services/data-service.service';
 
@@ -17,16 +18,18 @@ export class CountriesComponent implements OnInit {
   conVSrecover = 0;
   data!: GlobalDataSummary[];
   countries : string[] = [];
+  // dateWiseData: any ;
+  // selectedCountryData!: DateWiseData[];
   constructor(private dataService: DataServiceService) { }
 
   ngOnInit(): void {
 
-    this.dataService.getDateWiseDate().subscribe(
-      (result)=> {
-        console.log(result);
-        
-      }
-    )
+    // this.dataService.getDateWiseDate().subscribe(
+    //   (result)=> {
+    //     //console.log(result);
+    //     this.dateWiseData = result;
+    //   }
+    // )
 
     this.dataService.getGlobalData()
       .subscribe(
@@ -39,7 +42,7 @@ export class CountriesComponent implements OnInit {
             }) => {
 
               if(!Number.isNaN(row.confirmed)) {
-                console.log(row.country);
+                //console.log(row.country);
                 this.countries.push(row.country);
               }
             });
@@ -77,10 +80,7 @@ export class CountriesComponent implements OnInit {
             this.conVSdeath = Math.round(((this.totalDeaths / this.totalConfirmed) * 100) * 100 ) / 100;
             this.conVSrecover = Math.round(((this.totalRecovered / this.totalConfirmed) * 100) * 100 ) / 100;
             
-            console.log(this.totalConfirmed);
-            console.log(this.totalDeaths);
-            console.log(this.totalRecovered);
-            console.log(this.totalActive);
+            
             
           }
         }
