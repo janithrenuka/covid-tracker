@@ -18,6 +18,7 @@ export class CountriesComponent implements OnInit {
   conVSrecover = 0;
   data!: GlobalDataSummary[];
   countries : string[] = [];
+  filteredCountries : string[] = [];
   // dateWiseData: any ;
   // selectedCountryData!: DateWiseData[];
   constructor(private dataService: DataServiceService) { }
@@ -31,13 +32,17 @@ export class CountriesComponent implements OnInit {
     //   }
     // )
 
+    const unique = (value: any, index: any, self: string | any[]) => {
+      return self.indexOf(value) === index
+    }
+
     this.dataService.getGlobalData()
       .subscribe(
         {
           next : (result)=>{
             //console.log(result);
             result.forEach((row: {
-              country : string; 
+              country : string;
               confirmed : number;
             }) => {
 
@@ -47,7 +52,9 @@ export class CountriesComponent implements OnInit {
               }
             });
 
-            //console.log(this.countries);
+            console.log(this.countries);
+            this.filteredCountries = this.countries.filter(unique);
+            console.log(this.filteredCountries);
           }
         }
       )
@@ -55,18 +62,18 @@ export class CountriesComponent implements OnInit {
 
   updateValues(country : string) {
     console.log(country);
-    
+
     this.dataService.getGlobalData()
       .subscribe(
         {
           next : (result)=>{
             //console.log(result);
             result.forEach((row: {
-              country : string; 
+              country : string;
               confirmed : number;
               deaths : number;
               recovered : number;
-              active : number; 
+              active : number;
             }) => {
 
               if(row.country == country) {
@@ -79,9 +86,9 @@ export class CountriesComponent implements OnInit {
 
             this.conVSdeath = Math.round(((this.totalDeaths / this.totalConfirmed) * 100) * 100 ) / 100;
             this.conVSrecover = Math.round(((this.totalRecovered / this.totalConfirmed) * 100) * 100 ) / 100;
-            
-            
-            
+
+
+
           }
         }
       )
